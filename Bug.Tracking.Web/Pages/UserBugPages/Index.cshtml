@@ -1,0 +1,60 @@
+﻿@page
+@model Bug.Tracking.Web.Pages.UserBugPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Lista de Errores de Usuario</h1>
+
+<p>
+    <a asp-page="Create">Crear</a>
+</p>
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserBug[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserBug[0].CreatedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserBug[0].Project)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserBug[0].User)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.UserBug)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project!.Name)
+                    </td>
+                    <td>
+                        @{
+                            var fullName = item.User!.Name + " " + item.User!.Surname;
+                            @Html.DisplayFor(modelItem => fullName)
+                        }
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,54 @@
+﻿@page
+@model Bug.Tracking.Web.Pages.UserBugPages.EditModel
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h1>Editar</h1>
+
+<h4>Error de Usuario</h4>
+<hr />
+@if (!string.IsNullOrWhiteSpace(ViewBag.ErrorMessage))
+{
+    <h6 class="text-danger">@ViewBag.ErrorMessage</h6>
+    <hr />
+}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UserBug.Id" />
+            <div class="mb-3">
+                <label asp-for="UserBug.Description" class="form-label"></label>
+                <input asp-for="UserBug.Description" class="form-control" />
+                <span asp-validation-for="UserBug.Description" class="text-danger"></span>
+            </div>            
+            <div class="mb-3">
+                <label asp-for="UserBug.ProjectId" class="form-label"></label>
+                <select asp-for="UserBug.ProjectId" class="form-select" asp-items="ViewBag.ProjectId"></select>
+                <span asp-validation-for="UserBug.ProjectId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="UserBug.UserId" class="form-label"></label>
+                <select asp-for="UserBug.UserId" class="form-select" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserBug.UserId" class="text-danger"></span>
+            </div>
+            <div class="text-end">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+
+<div>
+    <a asp-page="./Index">Volver al listado</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
