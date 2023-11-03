@@ -93,23 +93,34 @@ namespace Bug.Tracking.Api.Controllers
         // PUT: api/UserBug/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserBug(long id, UserBug userBug)
+        public async Task<IActionResult> PutUserBug(long id, UserBugRequest request)
         {
-            if (id != userBug.Id)
+            if (id != request.Id)
             {
                 return BadRequest();
             }
 
-            if (!UserExists(userBug.UserId))
+            if (!UserExists(request.UserId))
             {
-                ModelState.AddModelError(nameof(userBug.UserId), "No coincide con nuestro registro.");
+                ModelState.AddModelError(nameof(request.UserId), "No coincide con nuestro registro.");
                 return BadRequest(ModelState);
             }
-            if (!ProjectExists(userBug.ProjectId))
+            if (!ProjectExists(request.ProjectId))
             {
-                ModelState.AddModelError(nameof(userBug.ProjectId), "No coincide con nuestro registro.");
+                ModelState.AddModelError(nameof(request.ProjectId), "No coincide con nuestro registro.");
                 return BadRequest(ModelState);
             }
+
+            var userBug = await _context.UserBugs.FindAsync(id);
+
+            if (userBug == null)
+            {
+                return BadRequest();
+            }
+
+            userBug.Description = request.Description;
+            userBug.ProjectId = request.ProjectId;
+            userBug.UserId = request.UserId;
 
             _context.Entry(userBug).State = EntityState.Modified;
 
