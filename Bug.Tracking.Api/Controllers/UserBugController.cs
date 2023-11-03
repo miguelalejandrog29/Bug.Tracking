@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Bug.Tracking.Api.Data;
+﻿using Bug.Tracking.Api.Data;
 using Bug.Tracking.Api.Data.Dto.Filter;
 using Bug.Tracking.Api.Data.Dto.Request;
 using Bug.Tracking.Api.Data.Dto.Response;
@@ -52,10 +51,14 @@ namespace Bug.Tracking.Api.Controllers
             predicate.Start(x => (filter.ProjectId != 0 && x.ProjectId == filter.ProjectId));
             predicate.Or(x => (filter.UserId != 0 && x.UserId == filter.UserId));
 
+            if (!string.IsNullOrWhiteSpace(filter.Description))
+                predicate.Or(x => EF.Functions.Like(x.Description, $"%{filter.Description}%"));
+
             if (filter.StartDate != null && filter.EndDate == null)
             {
-                predicate.Or(x => x.CreatedDate.Date >= filter.StartDate.Value.Date);                
-            } else if (filter.StartDate == null && filter.EndDate != null)
+                predicate.Or(x => x.CreatedDate.Date >= filter.StartDate.Value.Date);
+            }
+            else if (filter.StartDate == null && filter.EndDate != null)
             {
                 predicate.Or(x => x.CreatedDate.Date <= filter.EndDate.Value.Date);
             }

@@ -40,6 +40,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     //DefaultConnection or LocalDb
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //Para ver consultas producidas por EF
+    //options.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Name }, LogLevel.Information);
 });
 
 
